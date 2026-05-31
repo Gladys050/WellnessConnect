@@ -1,103 +1,185 @@
 ﻿import { useState } from "react";
-import { saveSession } from "../api";
+import { C } from "../theme";
+import { api, saveSession } from "../api";
 
 export default function Login({ onLogin }) {
+  const [role, setRole] = useState("student");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const role = email.toLowerCase().includes("admin") ? "admin" : "student";
-    const user = {
-      name: email ? email.split("@")[0] : "Guest",
-      role,
-    };
-    saveSession("demo-token", user);
-    onLogin(user);
+  async function handleSubmit() {
+    if (!email || !password)
+      return setError("Please enter email and password.");
+    setLoading(true);
+    setError("");
+    try {
+      const { token, user } = await api.auth.login(email, password);
+      saveSession(token, user);
+      onLogin(user);
+    } catch (err) {
+      // For demo purposes fall back to local login
+      const demoUser = {
+        name: role === "admin" ? "Admin User" : "Jane Doe",
+        role,
+        email,
+        studentId: "STU-2024-0892",
+        major: "Psychology",
+        year: "3rd Year",
+      };
+      saveSession("demo-token", demoUser);
+      onLogin(demoUser);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div
       style={{
         minHeight: "100vh",
+        background: "linear-gradient(135deg, #EEF0FF 0%, #F5F3FF 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#f8fafc",
-        padding: 24,
       }}
     >
-      <form
-        onSubmit={handleSubmit}
+      <div
         style={{
-          width: 360,
-          background: "#ffffff",
-          borderRadius: 24,
-          padding: 32,
-          boxShadow: "0 24px 80px rgba(15, 23, 42, 0.08)",
+          background: C.white,
+          borderRadius: 20,
+          padding: 40,
+          width: 380,
+          boxShadow: "0 20px 60px rgba(108,99,255,0.15)",
         }}
       >
-        <h1 style={{ margin: 0, fontSize: 28, color: "#0f172a" }}>
-          WellnessConnect
-        </h1>
-        <p style={{ color: "#64748b", marginTop: 8, marginBottom: 28 }}>
-          Sign in to continue to your mental wellness dashboard.
-        </p>
-        <label style={{ display: "block", marginBottom: 16 }}>
-          <div style={{ marginBottom: 6, color: "#475569", fontSize: 13 }}>
-            Email
-          </div>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            placeholder="you@example.com"
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>💜</div>
+          <h1
             style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: 14,
-              border: "1px solid #cbd5e1",
-              outline: "none",
+              margin: "0 0 4px",
+              fontFamily: "Georgia, serif",
+              color: C.dark,
+              fontSize: 24,
             }}
-          />
-        </label>
-        <label style={{ display: "block", marginBottom: 24 }}>
-          <div style={{ marginBottom: 6, color: "#475569", fontSize: 13 }}>
-            Password
-          </div>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-            placeholder="Enter your password"
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: 14,
-              border: "1px solid #cbd5e1",
-            }}
-          />
-        </label>
-        <button
-          type="submit"
+          >
+            Wellness Connect
+          </h1>
+          <p style={{ margin: 0, color: C.muted, fontSize: 14 }}>
+            Student Support System
+          </p>
+        </div>
+
+        {/* Role toggle */}
+        <div
           style={{
-            width: "100%",
-            padding: "14px 16px",
-            borderRadius: 16,
-            background: "#6366f1",
-            color: "#ffffff",
-            fontWeight: 700,
-            cursor: "pointer",
+            display: "flex",
+            gap: 0,
+            marginBottom: 22,
+            background: C.bg,
+            borderRadius: 10,
+            padding: 4,
           }}
         >
-          Sign In
+          {["student", "admin"].map((r) => (
+            <button
+              key={r}
+              onClick={() => setRole(r)}
+              style={{
+                flex: 1,
+                padding: "8px 0",
+                borderRadius: 8,
+                border: "none",
+                cursor: "pointer",
+                background: role === r ? C.white : "transparent",
+                color: role === r ? C.primary : C.muted,
+                fontWeight: role === r ? 700 : 500,
+                fontSize: 13,
+                boxShadow: role === r ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+                transition: "all 0.15s",
+              }}
+            >
+              {r === "student" ? "👤 Student" : "🔧 Admin"}
+            </button>
+          ))}
+        </div>
+
+        {/* Fields */}
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email address"
+          type="email"
+          style={{
+            width: "100%",
+            padding: "11px 14px",
+            borderRadius: 10,
+            border: `1px solid ${C.border}`,
+            fontSize: 14,
+            marginBottom: 12,
+            outline: "none",
+            boxSizing: "border-box",
+          }}
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          placeholder="Password"
+          type="password"
+          style={{
+            width: "100%",
+            padding: "11px 14px",
+            borderRadius: 10,
+            border: `1px solid ${C.border}`,
+            fontSize: 14,
+            marginBottom: 8,
+            outline: "none",
+            boxSizing: "border-box",
+          }}
+        />
+
+        {error && (
+          <div style={{ color: C.danger, fontSize: 12, marginBottom: 10 }}>
+            {error}
+          </div>
+        )}
+
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          style={{
+            width: "100%",
+            padding: "12px 0",
+            borderRadius: 10,
+            marginTop: 8,
+            background: loading ? C.muted : C.primary,
+            color: "#fff",
+            border: "none",
+            cursor: loading ? "not-allowed" : "pointer",
+            fontWeight: 700,
+            fontSize: 15,
+          }}
+        >
+          {loading ? "Signing in…" : "Sign In →"}
         </button>
-        <p style={{ marginTop: 20, color: "#94a3b8", fontSize: 13 }}>
-          Tip: use an email containing "admin" to sign in as Administrator.
-        </p>
-      </form>
+
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 14,
+            fontSize: 12,
+            color: C.muted,
+          }}
+        >
+          Demo: any credentials work ·{" "}
+          <span style={{ color: C.primary, cursor: "pointer" }}>
+            Forgot password?
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
