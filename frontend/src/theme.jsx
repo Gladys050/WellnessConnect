@@ -1,21 +1,38 @@
 ﻿export const C = {
-  dangerLight: "#FFF0F0",
-  success: "#22C55E",
-  successLight: "#EDFDF5",
-  warning: "#F59E0B",
-  warningLight: "#FFFBEB",
+  // Neutrals
   bg: "#F8FAFC",
   white: "#ffffff",
   dark: "#0f172a",
   slate: "#475569",
   muted: "#64748b",
   border: "#e2e8f0",
-  primary: "#6366ff",
-  primaryLight: "#eef2ff",
-  danger: "#dc2626",
-  background: "#f8fafc",
+
+  // Brand
+  primary: "#4F46E5",
+  primaryHover: "#4338CA",
+  primaryLight: "#EEF2FF",
+
+  // Semantic
+  success: "#22C55E",
+  successLight: "#ECFDF5",
+  warning: "#F59E0B",
+  warningLight: "#FFFBEB",
+  danger: "#DC2626",
+  dangerLight: "#FEF2F2",
 };
-export function Avatar({ name, size = 40, bg = C.primary }) {
+
+export function Avatar({
+  name,
+  size = 40,
+  bg = "#EDE9FE",
+  textColor = "#5B21B6",
+}) {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2);
+
   return (
     <div
       style={{
@@ -26,18 +43,13 @@ export function Avatar({ name, size = 40, bg = C.primary }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "#fff",
-        fontWeight: 700,
-        fontSize: size * 0.38,
+        color: textColor,
+        fontWeight: 500,
+        fontSize: size * 0.36,
         flexShrink: 0,
-        fontFamily: "Georgia, serif",
       }}
     >
-      {name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)}
+      {initials}
     </div>
   );
 }

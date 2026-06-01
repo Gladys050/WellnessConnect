@@ -33,6 +33,10 @@ export default function App() {
   const [page, setPage] = useState(
     user?.role === "admin" ? "admin" : "dashboard",
   );
+  const [appointments, setAppointments] = useState([
+    { date: "June 2", time: "10:00 AM", therapist: "Dr. Aisha Khan" },
+    { date: "June 9", time: "2:00 PM", therapist: "Jordan Lee" },
+  ]);
 
   function handleLogin(u) {
     setUser(u);
@@ -50,15 +54,15 @@ export default function App() {
   if (!user) return <Login onLogin={handleLogin} />;
 
   const PAGES = {
-    dashboard: <Dashboard setPage={setPage} />,
-    book: <BookTherapist />,
-    appointments: <MyAppointments />,
+    dashboard: <Dashboard setPage={setPage} appointments={appointments} />,
+    book: <BookTherapist setAppointments={setAppointments} />,
+    appointments: <MyAppointments appointments={appointments} />,
     report: <ConfidentialReport />,
     emergency: <EmergencyHelp />,
     resources: <Resources />,
     profile: <Profile />,
     admin: <AdminDashboard />,
-    "admin-appointments": <MyAppointments />,
+    "admin-appointments": <MyAppointments appointments={appointments} />,
     "admin-reports": <ConfidentialReport />,
     "admin-users": <PlaceholderPage title="User Management" />,
     "admin-analytics": <AdminDashboard />,

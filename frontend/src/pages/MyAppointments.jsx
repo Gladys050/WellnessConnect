@@ -1,12 +1,9 @@
-﻿export default function MyAppointments() {
-  const appointments = [
-    { date: "June 2", time: "10:00 AM", therapist: "Dr. Aisha Khan" },
-    { date: "June 9", time: "2:00 PM", therapist: "Jordan Lee" },
-  ];
-
+﻿export default function MyAppointments({ appointments = [] }) {
   return (
     <div style={{ padding: 24 }}>
-      <h1 style={{ margin: 0, fontSize: 32, color: "#0f172a" }}>My Appointments</h1>
+      <h1 style={{ margin: 0, fontSize: 32, color: "#0f172a" }}>
+        My Appointments
+      </h1>
       <p style={{ color: "#64748b", marginTop: 8 }}>
         Review upcoming sessions and appointment details.
       </p>
@@ -15,12 +12,29 @@
         {appointments.map((item) => (
           <div
             key={`${item.date}-${item.time}`}
-            style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: 18, padding: 20 }}
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e2e8f0",
+              borderRadius: 18,
+              padding: 20,
+            }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{item.date}</div>
-                <div style={{ color: "#64748b", marginTop: 4 }}>{item.time}</div>
+                <div
+                  style={{ fontSize: 16, fontWeight: 700, color: "#0f172a" }}
+                >
+                  {item.date}
+                </div>
+                <div style={{ color: "#64748b", marginTop: 4 }}>
+                  {item.time}
+                </div>
               </div>
               <div style={{ color: "#475569" }}>{item.therapist}</div>
             </div>
