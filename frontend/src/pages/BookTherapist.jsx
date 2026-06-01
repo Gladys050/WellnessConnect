@@ -1,25 +1,36 @@
-﻿export default function BookTherapist({ setAppointments }) {
-  const therapists = [
-    {
-      name: "Dr. Aisha Khan",
-      specialty: "Cognitive Behavioral Therapy",
-      date: "June 16",
-      time: "11:00 AM",
-    },
-    {
-      name: "Jordan Lee",
-      specialty: "Stress Management",
-      date: "June 18",
-      time: "2:30 PM",
-    },
-    {
-      name: "Taylor Hart",
-      specialty: "Mindfulness Coaching",
-      date: "June 20",
-      time: "4:00 PM",
-    },
-  ];
+﻿import { Avatar, C } from "../theme";
 
+const therapists = [
+  {
+    name: "Dr. Aisha Khan",
+    specialty: "Cognitive Behavioral Therapy",
+    date: "June 16",
+    time: "11:00 AM",
+    mode: "Online",
+    avatarBg: "#EDE9FE",
+    avatarColor: "#5B21B6",
+  },
+  {
+    name: "Jordan Lee",
+    specialty: "Stress Management",
+    date: "June 18",
+    time: "2:30 PM",
+    mode: "In-person",
+    avatarBg: "#ECFDF5",
+    avatarColor: "#065F46",
+  },
+  {
+    name: "Taylor Hart",
+    specialty: "Mindfulness Coaching",
+    date: "June 20",
+    time: "4:00 PM",
+    mode: "Online",
+    avatarBg: "#EEF2FF",
+    avatarColor: "#3730A3",
+  },
+];
+
+export default function BookTherapist({ setAppointments }) {
   function handleBook(therapist) {
     setAppointments((prev) => [
       ...prev,
@@ -28,52 +39,83 @@
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1 style={{ margin: 0, fontSize: 32, color: "#0f172a" }}>
-        Book Therapist
-      </h1>
-      <p style={{ color: "#64748b", marginTop: 8 }}>
-        Choose a therapist and reserve a session slot.
-      </p>
+    <div style={{ padding: 24, maxWidth: 900 }}>
+      {/* Header */}
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ margin: 0, fontSize: 20, fontWeight: 500, color: C.dark }}>
+          Book a therapist
+        </h1>
+        <p style={{ margin: "4px 0 0", fontSize: 13, color: C.muted }}>
+          Choose a therapist and reserve a session slot.
+        </p>
+      </div>
 
-      <div style={{ marginTop: 24, display: "grid", gap: 16 }}>
-        {therapists.map((therapist) => (
+      {/* Therapist cards */}
+      <div style={{ display: "grid", gap: 12 }}>
+        {therapists.map((t) => (
           <div
-            key={therapist.name}
+            key={t.name}
             style={{
-              background: "#ffffff",
-              border: "1px solid #e2e8f0",
-              borderRadius: 18,
+              background: C.white,
+              border: `0.5px solid ${C.border}`,
+              borderRadius: 16,
               padding: 20,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 12,
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <div
-                  style={{ fontSize: 17, fontWeight: 700, color: "#0f172a" }}
-                >
-                  {therapist.name}
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              {/* Avatar */}
+              <Avatar
+                name={t.name}
+                size={46}
+                bg={t.avatarBg}
+                textColor={t.avatarColor}
+              />
+
+              {/* Info */}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 500, color: C.dark }}>
+                  {t.name}
                 </div>
-                <div style={{ color: "#64748b", marginTop: 4 }}>
-                  {therapist.specialty}
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
+                  {t.specialty}
+                </div>
+                <div
+                  style={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 8,
+                    fontSize: 11,
+                    color: C.muted,
+                  }}
+                >
+                  <span>📅 {t.date}</span>
+                  <span>⏰ {t.time}</span>
+                  <span>💻 {t.mode}</span>
                 </div>
               </div>
+
+              {/* Book button */}
               <button
-                onClick={() => handleBook(therapist)}
+                onClick={() => handleBook(t)}
                 style={{
-                  padding: "10px 16px",
-                  borderRadius: 14,
-                  background: "#6366f1",
-                  color: "#ffffff",
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  background: C.primary,
+                  color: "#fff",
+                  border: "none",
                   cursor: "pointer",
+                  fontWeight: 500,
+                  fontSize: 12,
+                  whiteSpace: "nowrap",
+                  transition: "background 0.15s",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = C.primaryHover)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = C.primary)
+                }
               >
                 Book
               </button>
