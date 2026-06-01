@@ -1,8 +1,18 @@
 import { C } from "../theme";
+import { LayoutDashboard } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 
 const studentNav = [
-  { id: "dashboard", icon: "⊞", label: "Dashboard" },
-  { id: "book", icon: "📅", label: "Book Therapist" },
+  {
+    id: "dashboard",
+    icon: <LayoutDashboard size={16} />,
+    label: "Dashboard",
+  },
+  {
+    id: "book",
+    icon: <CalendarPlus size={16} />,
+    label: "Book Therapist",
+  },
   { id: "appointments", icon: "🗓", label: "My Appointments" },
   { id: "report", icon: "📋", label: "Confidential Report" },
   { id: "emergency", icon: "🚨", label: "Emergency Help", accent: true },
