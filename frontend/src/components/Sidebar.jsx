@@ -1,6 +1,14 @@
 import { C } from "../theme";
 import { LayoutDashboard } from "lucide-react";
 import { CalendarPlus } from "lucide-react";
+import { ClipboardClock } from "lucide-react";
+import { ClipboardPlus } from "lucide-react";
+import { Siren } from "lucide-react";
+import { LibraryBig } from "lucide-react";
+import { UserPen } from "lucide-react";
+import { Users } from "lucide-react";
+import { FileChartColumnIncreasing } from "lucide-react";
+import { Settings } from "lucide-react";
 
 const studentNav = [
   {
@@ -13,20 +21,45 @@ const studentNav = [
     icon: <CalendarPlus size={16} />,
     label: "Book Therapist",
   },
-  { id: "appointments", icon: "🗓", label: "My Appointments" },
-  { id: "report", icon: "📋", label: "Confidential Report" },
-  { id: "emergency", icon: "🚨", label: "Emergency Help", accent: true },
-  { id: "resources", icon: "📚", label: "Resources" },
-  { id: "profile", icon: "👤", label: "Profile" },
+  {
+    id: "appointments",
+    icon: <ClipboardClock size={16} />,
+    label: "My Appointments",
+  },
+  {
+    id: "report",
+    icon: <ClipboardPlus size={16} />,
+    label: "Confidential Report",
+  },
+  {
+    id: "emergency",
+    icon: <Siren size={16} />,
+    label: "Emergency Help",
+    accent: true,
+  },
+  { id: "resources", icon: <LibraryBig size={16} />, label: "Resources" },
+  { id: "profile", icon: <UserPen size={16} />, label: "Profile" },
 ];
 
 const adminNav = [
-  { id: "admin", icon: "⊞", label: "Dashboard" },
-  { id: "admin-appointments", icon: "📅", label: "Appointments" },
-  { id: "admin-reports", icon: "📋", label: "Reports" },
-  { id: "admin-users", icon: "👥", label: "Users" },
-  { id: "admin-analytics", icon: "📊", label: "Analytics" },
-  { id: "admin-settings", icon: "⚙️", label: "Settings" },
+  { id: "admin", icon: <LayoutDashboard size={16} />, label: "Dashboard" },
+  {
+    id: "admin-appointments",
+    icon: <ClipboardClock size={16} />,
+    label: "Appointments",
+  },
+  { id: "admin-reports", icon: <CalendarPlus size={16} />, label: "Reports" },
+  { id: "admin-users", icon: <Users size={16} />, label: "Users" },
+  {
+    id: "admin-analytics",
+    icon: <FileChartColumnIncreasing size={16} />,
+    label: "Analytics",
+  },
+  {
+    id: "admin-settings",
+    icon: <Settings size={16} />,
+    label: "Settings",
+  },
 ];
 
 export default function Sidebar({ page, setPage, isAdmin, onLogout }) {
